@@ -3,12 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'user.freezed.dart';
 part 'user.g.dart';
 
-/// {@template closet}
-/// Model representing a User.
-/// {@endtemplate}
 @freezed
 abstract class User with _$User {
-  /// {@macro closet}
   const factory User({
     required String id,
     required String name,

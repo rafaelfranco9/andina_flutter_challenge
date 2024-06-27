@@ -3,11 +3,7 @@ import 'dart:convert';
 import 'package:api_client/api_client.dart';
 import 'package:app_http_client/app_http_client.dart';
 
-/// {@template user_resource}
-/// User Resource.
-/// {@endtemplate}
 class UserResource {
-  /// {@macro user_resource}
   UserResource({
     required AppHttpClient appHttpClient,
   }) : _appHttpClient = appHttpClient;
@@ -25,5 +21,10 @@ class UserResource {
       final parsedJson = jsonDecode(data) as Map<String, dynamic>;
       return User.fromJson(parsedJson);
     }
+  }
+
+  /// Create user
+  Future<void> createUser({required User user}) async {
+    await _appHttpClient.post(_path, user.toJson());
   }
 }

@@ -1,6 +1,3 @@
-/// {@template http_client_local_mock}
-/// App Http Client Interface
-/// {@endtemplate}
 abstract class AppHttpClient {
   /// get request
   Future<String?> get(String path);
