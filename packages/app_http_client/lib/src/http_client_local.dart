@@ -3,7 +3,11 @@ import 'dart:convert';
 import 'package:app_http_client/src/app_http_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+/// {@template http_client_local_mock}
+/// Http Client Local Mock
+/// {@endtemplate}
 class HttpClientLocalMock implements AppHttpClient {
+  /// {@macro http_client_local_mock}
   HttpClientLocalMock({
     required FlutterSecureStorage? secureStorage,
   }) : _secureStorage = secureStorage ?? const FlutterSecureStorage();
