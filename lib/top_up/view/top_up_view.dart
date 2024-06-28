@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:andina_flutter_challenge/app/bloc/app_bloc.dart';
+import 'package:andina_flutter_challenge/top_up/widgets/add_beneficiary_bottom_sheet.dart';
 import 'package:andina_flutter_challenge/top_up/widgets/beneficiary_card.dart';
+import 'package:andina_flutter_challenge/top_up/widgets/top_up_options_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,6 +16,14 @@ class TopUpView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Top Up'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
+        onPressed: () => _showAddBeneficiaryBottomSheet(context),
+        label: const Text('Add Beneficiary'),
+        icon: const Icon(Icons.add),
       ),
       body: Padding(
         padding: const EdgeInsets.all(12),
@@ -39,7 +49,11 @@ class TopUpView extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      BeneficiaryCard(width: cardWidth),
+                      BeneficiaryCard(
+                          width: cardWidth,
+                          onPressed: () {
+                            _showTopUpOptionsBottomSheet(context);
+                          }),
                       const SizedBox(width: spacing),
                       BeneficiaryCard(width: cardWidth),
                       const SizedBox(width: spacing),
@@ -74,5 +88,29 @@ class TopUpView extends StatelessWidget {
     final adjustedCardWidth = max(cardMaxWidth - (cardWidthReduction / 2.2), 0.0);
 
     return adjustedCardWidth;
+  }
+
+  void _showAddBeneficiaryBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => AddBeneficiaryBottomSheet(
+        onAddBeneficiary: (name, phone) {
+          print('Name: $name, Phone: $phone');
+        },
+      ),
+    );
+  }
+
+  void _showTopUpOptionsBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (_) => TopUpOptionsBottomSheet(
+        onTopUpOptionSelected: (amount) {
+          print('Top up amount: $amount');
+        },
+      ),
+    );
   }
 }
