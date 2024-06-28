@@ -1,5 +1,6 @@
 import 'package:andina_flutter_challenge/app/app.dart';
 import 'package:andina_flutter_challenge/main/main.dart';
+import 'package:andina_flutter_challenge/top_up/view/top_up_page.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,14 +32,7 @@ class AppView extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: Scaffold(
-            appBar: AppBar(
-              title: const Text('Edenred Challenge'),
-            ),
-            body: const Center(
-              child: Text('Edenred Challenge'),
-            ),
-          ),
+          home: const TopUpPage(),
         ),
       ),
     );
