@@ -3,6 +3,7 @@ import 'package:andina_flutter_challenge/main/bootstrap.dart';
 import 'package:andina_flutter_challenge/main/flavors.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:beneficiaries_repository/beneficiaries_repository.dart';
+import 'package:user_repository/user_repository.dart';
 
 void main() {
   bootstrap(() async {
@@ -10,6 +11,7 @@ void main() {
       flavor: Flavor.prod,
       authRepository: AuthLocalRepository(),
       beneficiariesRepository: BeneficiariesLocalRepository(),
+      userRepository: UserLocalRepository(),
     );
   });
 }
