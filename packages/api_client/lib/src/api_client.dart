@@ -15,4 +15,8 @@ class ApiClient {
   BeneficiariesResource get beneficiariesResource {
     return BeneficiariesResource(appHttpClient: _appHttpClient);
   }
+
+  TransactionsResource get transactionsResource {
+    return TransactionsResource(appHttpClient: _appHttpClient);
+  }
 }
