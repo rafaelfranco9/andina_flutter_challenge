@@ -12,10 +12,11 @@ class AppBloc extends Cubit<AppState> {
 
   Future<void> init() async {
     try {
+      emit(state.copyWith(status: AppStatus.loading));
       final user = await _authRepository.login('', '');
-      emit(state.copyWith(isAuthenticated: true, user: user));
+      emit(state.copyWith(isAuthenticated: true, user: user, status: AppStatus.authenticated));
     } catch (e) {
-      emit(state.copyWith(isAuthenticated: false));
+      emit(state.copyWith(isAuthenticated: false, status: AppStatus.unauthenticated));
     }
   }
 }

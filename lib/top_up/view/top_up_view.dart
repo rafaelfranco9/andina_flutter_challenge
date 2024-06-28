@@ -1,71 +1,87 @@
 import 'dart:math';
 
 import 'package:andina_flutter_challenge/app/bloc/app_bloc.dart';
+import 'package:andina_flutter_challenge/top_up/bloc/listeners/top_up_status_listener.dart';
+import 'package:andina_flutter_challenge/top_up/bloc/top_up_event.dart';
+import 'package:andina_flutter_challenge/top_up/bloc/top_up_state.dart';
+import 'package:andina_flutter_challenge/top_up/widgets/add_beneficiary_action_button.dart';
 import 'package:andina_flutter_challenge/top_up/widgets/add_beneficiary_bottom_sheet.dart';
 import 'package:andina_flutter_challenge/top_up/widgets/beneficiary_card.dart';
 import 'package:andina_flutter_challenge/top_up/widgets/top_up_options_bottom_sheet.dart';
+import 'package:api_client/api_client.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:uuid/uuid.dart';
+
+import '../bloc/top_up_bloc.dart';
 
 class TopUpView extends StatelessWidget {
   const TopUpView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AppBloc bloc) => bloc.state.user);
+    final user = context.select((AppBloc bloc) => bloc.state.user!);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Top Up'),
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
+      appBar: AppBar(title: const Text('Top Up')),
+      floatingActionButton: AddBeneficiaryActionButton(
         onPressed: () => _showAddBeneficiaryBottomSheet(context),
-        label: const Text('Add Beneficiary'),
-        icon: const Icon(Icons.add),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              user != null ? 'Hello ${user.name}' : 'Hello',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 20),
-            LayoutBuilder(
-              builder: (context, constraints) {
-                const spacing = 8.0;
-                final cardWidth = _calculateCardWidth(
-                  maxWidth: constraints.maxWidth,
-                  cardMaxWidth: 200.0,
-                  spacing: spacing,
-                );
+      body: MultiBlocListener(
+        listeners: [TopUpStatusListener()],
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Hello ${user.name}',
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Totat Balance: AED ${user.balance.toStringAsFixed(2)}',
+                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 20),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  const spacing = 8.0;
+                  final cardWidth = _calculateCardWidth(
+                    maxWidth: constraints.maxWidth,
+                    cardMaxWidth: 200.0,
+                    spacing: spacing,
+                  );
 
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      BeneficiaryCard(
-                          width: cardWidth,
-                          onPressed: () {
-                            _showTopUpOptionsBottomSheet(context);
-                          }),
-                      const SizedBox(width: spacing),
-                      BeneficiaryCard(width: cardWidth),
-                      const SizedBox(width: spacing),
-                      BeneficiaryCard(width: cardWidth),
-                      const SizedBox(width: spacing),
-                      BeneficiaryCard(width: cardWidth),
-                    ],
-                  ),
-                );
-              },
-            )
-          ],
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: BlocSelector<TopUpBloc, TopUpState, List<Beneficiary>>(
+                      selector: (state) => state.beneficiaries,
+                      builder: (context, beneficiaries) => beneficiaries.isNotEmpty
+                          ? Row(
+                              children: beneficiaries
+                                  .map(
+                                    (e) => Container(
+                                      margin: const EdgeInsets.only(right: spacing),
+                                      child: BeneficiaryCard(
+                                        name: e.nickname,
+                                        phone: e.phoneNumber,
+                                        width: cardWidth,
+                                        onPressed: () {
+                                          _showTopUpOptionsBottomSheet(context);
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                  .toList(),
+                            )
+                          : const Text('There are no beneficiaries yet. Add one to start topping up!'),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -91,18 +107,28 @@ class TopUpView extends StatelessWidget {
   }
 
   void _showAddBeneficiaryBottomSheet(BuildContext context) {
+    final topUpBloc = context.read<TopUpBloc>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       builder: (_) => AddBeneficiaryBottomSheet(
         onAddBeneficiary: (name, phone) {
-          print('Name: $name, Phone: $phone');
+          topUpBloc.add(
+            AddBeneficiary(
+              beneficiary: Beneficiary(
+                id: const Uuid().v4(),
+                nickname: name,
+                phoneNumber: phone,
+              ),
+            ),
+          );
         },
       ),
     );
   }
 
   void _showTopUpOptionsBottomSheet(BuildContext context) {
+    final topUpBloc = context.read<TopUpBloc>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
