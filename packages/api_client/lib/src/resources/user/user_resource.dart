@@ -25,6 +25,6 @@ class UserResource {
 
   /// Create user
   Future<void> createUser({required User user}) async {
-    await _appHttpClient.post(_path, user.toJson());
+    await _appHttpClient.post('$_path/${user.id}', user.toJson());
   }
 }

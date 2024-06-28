@@ -9,6 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  api_client:
+    path: packages/api_client
+  auth_repository:
+    path: packages/auth_repository
   cupertino_icons: ^1.0.6
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
