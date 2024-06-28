@@ -10,6 +10,10 @@ class HttpClientLocal implements AppHttpClient {
 
   final FlutterSecureStorage _secureStorage;
 
+  bool _supportedBodyType(dynamic body) {
+    return body is Map || body is List;
+  }
+
   /// Simulate a get request
   @override
   Future<String?> get(String path) async {
@@ -18,24 +22,37 @@ class HttpClientLocal implements AppHttpClient {
 
   /// Simulate a post request
   @override
-  Future<void> post(String path, Map<String, dynamic> body) async {
-    await _secureStorage.write(key: path, value: jsonEncode(body));
+  Future<void> post(String path, dynamic body) async {
+    if (_supportedBodyType(body) == false) {
+      throw Exception('Unsupported body type');
+    }
+
+    final value = body is String ? body : jsonEncode(body);
+    await _secureStorage.write(key: path, value: value);
   }
 
   /// Simulate a put request
   @override
-  Future<void> put(String path, Map<String, dynamic> body) async {
+  Future<void> put(String path, dynamic body) async {
     final keyExists = await _secureStorage.containsKey(key: path);
     if (!keyExists) {
       await _secureStorage.write(key: path, value: jsonEncode(body));
+      return;
     }
 
     final currentValue = await _secureStorage.read(key: path);
-    final currentBody = (jsonDecode(currentValue!) as Map<String, dynamic>)
-      ..addAll(
-        body,
-      );
+    final currentBody = jsonDecode(currentValue!);
 
-    await _secureStorage.write(key: path, value: jsonEncode(currentBody));
+    if (currentBody is List) {
+      await _secureStorage.write(key: path, value: jsonEncode([...currentBody, ...body]));
+      return;
+    }
+
+    if (currentBody is Map) {
+      await _secureStorage.write(key: path, value: jsonEncode({...currentBody, ...body}));
+      return;
+    }
+
+    throw Exception('Unsupported body type');
   }
 }

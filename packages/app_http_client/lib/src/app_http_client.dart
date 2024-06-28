@@ -3,8 +3,8 @@ abstract class AppHttpClient {
   Future<String?> get(String path);
 
   /// post request
-  Future<void> post(String path, Map<String, dynamic> body);
+  Future<void> post(String path, dynamic body);
 
   /// put request
-  Future<void> put(String path, Map<String, dynamic> body);
+  Future<void> put(String path, dynamic body);
 }

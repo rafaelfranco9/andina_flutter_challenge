@@ -13,6 +13,8 @@ dependencies:
     path: packages/api_client
   auth_repository:
     path: packages/auth_repository
+  beneficiaries_repository:
+    path: packages/beneficiaries_repository
   cupertino_icons: ^1.0.6
   flutter_bloc: ^8.1.6
   equatable: ^2.0.5
