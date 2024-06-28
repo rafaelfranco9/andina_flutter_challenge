@@ -24,6 +24,7 @@ mixin _$User {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
+  double get balance => throw _privateConstructorUsedError;
   bool get isVerified => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,7 +38,12 @@ abstract class $UserCopyWith<$Res> {
       _$UserCopyWithImpl<$Res, User>;
   @useResult
   $Res call(
-      {String id, String name, String email, String nickname, bool isVerified});
+      {String id,
+      String name,
+      String email,
+      String nickname,
+      double balance,
+      bool isVerified});
 }
 
 /// @nodoc
@@ -57,6 +63,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? name = null,
     Object? email = null,
     Object? nickname = null,
+    Object? balance = null,
     Object? isVerified = null,
   }) {
     return _then(_value.copyWith(
@@ -76,6 +83,10 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      balance: null == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double,
       isVerified: null == isVerified
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
@@ -92,7 +103,12 @@ abstract class _$$UserImplCopyWith<$Res> implements $UserCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, String name, String email, String nickname, bool isVerified});
+      {String id,
+      String name,
+      String email,
+      String nickname,
+      double balance,
+      bool isVerified});
 }
 
 /// @nodoc
@@ -109,6 +125,7 @@ class __$$UserImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? nickname = null,
+    Object? balance = null,
     Object? isVerified = null,
   }) {
     return _then(_$UserImpl(
@@ -128,6 +145,10 @@ class __$$UserImplCopyWithImpl<$Res>
           ? _value.nickname
           : nickname // ignore: cast_nullable_to_non_nullable
               as String,
+      balance: null == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double,
       isVerified: null == isVerified
           ? _value.isVerified
           : isVerified // ignore: cast_nullable_to_non_nullable
@@ -144,6 +165,7 @@ class _$UserImpl implements _User {
       required this.name,
       required this.email,
       required this.nickname,
+      required this.balance,
       this.isVerified = false});
 
   factory _$UserImpl.fromJson(Map<String, dynamic> json) =>
@@ -158,12 +180,14 @@ class _$UserImpl implements _User {
   @override
   final String nickname;
   @override
+  final double balance;
+  @override
   @JsonKey()
   final bool isVerified;
 
   @override
   String toString() {
-    return 'User(id: $id, name: $name, email: $email, nickname: $nickname, isVerified: $isVerified)';
+    return 'User(id: $id, name: $name, email: $email, nickname: $nickname, balance: $balance, isVerified: $isVerified)';
   }
 
   @override
@@ -176,6 +200,7 @@ class _$UserImpl implements _User {
             (identical(other.email, email) || other.email == email) &&
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
+            (identical(other.balance, balance) || other.balance == balance) &&
             (identical(other.isVerified, isVerified) ||
                 other.isVerified == isVerified));
   }
@@ -183,7 +208,7 @@ class _$UserImpl implements _User {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, name, email, nickname, isVerified);
+      Object.hash(runtimeType, id, name, email, nickname, balance, isVerified);
 
   @JsonKey(ignore: true)
   @override
@@ -205,6 +230,7 @@ abstract class _User implements User {
       required final String name,
       required final String email,
       required final String nickname,
+      required final double balance,
       final bool isVerified}) = _$UserImpl;
 
   factory _User.fromJson(Map<String, dynamic> json) = _$UserImpl.fromJson;
@@ -217,6 +243,8 @@ abstract class _User implements User {
   String get email;
   @override
   String get nickname;
+  @override
+  double get balance;
   @override
   bool get isVerified;
   @override

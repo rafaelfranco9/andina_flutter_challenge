@@ -11,4 +11,8 @@ class ApiClient {
   UserResource get userResource {
     return UserResource(appHttpClient: _appHttpClient);
   }
+
+  BeneficiariesResource get beneficiariesResource {
+    return BeneficiariesResource(appHttpClient: _appHttpClient);
+  }
 }

@@ -54,6 +54,13 @@ packages:
       relative: true
     source: path
     version: "0.1.0+1"
+  beneficiaries_repository:
+    dependency: "direct main"
+    description:
+      path: "packages/beneficiaries_repository"
+      relative: true
+    source: path
+    version: "0.1.0+1"
   bloc:
     dependency: transitive
     description:

@@ -10,6 +10,7 @@ abstract class User with _$User {
     required String name,
     required String email,
     required String nickname,
+    required double balance,
     @Default(false) bool isVerified,
   }) = _User;
 
@@ -22,5 +23,6 @@ abstract class User with _$User {
     name: '',
     email: '',
     nickname: '',
+    balance: 0,
   );
 }
