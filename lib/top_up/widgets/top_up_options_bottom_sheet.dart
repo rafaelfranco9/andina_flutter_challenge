@@ -20,7 +20,10 @@ class TopUpOptionsBottomSheet extends StatelessWidget {
           ListView.separated(
             shrinkWrap: true,
             itemBuilder: (context, index) => ListTile(
-              onTap: () => onTopUpOptionSelected(topUpOptions[index]),
+              onTap: () {
+                onTopUpOptionSelected(topUpOptions[index]);
+                Navigator.of(context).pop();
+              },
               title: Text(
                 'AED ${topUpOptions[index]}',
                 style: const TextStyle(fontSize: 18),
