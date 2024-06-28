@@ -35,7 +35,7 @@ class AppView extends StatelessWidget {
             appBar: AppBar(
               title: const Text('Edenred Challenge'),
             ),
-            body: Center(
+            body: const Center(
               child: Text('Edenred Challenge'),
             ),
           ),
