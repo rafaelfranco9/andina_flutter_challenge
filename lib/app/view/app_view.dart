@@ -5,6 +5,7 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:beneficiaries_repository/beneficiaries_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:user_repository/user_repository.dart';
 
 class AppView extends StatelessWidget {
   const AppView({
@@ -12,12 +13,15 @@ class AppView extends StatelessWidget {
     required this.flavor,
     required AuthRepository authRepository,
     required BeneficiariesRepository beneficiariesRepository,
+    required UserRepository userRepository,
   })  : _authRepository = authRepository,
+        _userRepository = userRepository,
         _beneficiariesRepository = beneficiariesRepository;
 
   final Flavor flavor;
   final AuthRepository _authRepository;
   final BeneficiariesRepository _beneficiariesRepository;
+  final UserRepository _userRepository;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +29,7 @@ class AppView extends StatelessWidget {
       providers: [
         RepositoryProvider<AuthRepository>.value(value: _authRepository),
         RepositoryProvider<BeneficiariesRepository>.value(value: _beneficiariesRepository),
+        RepositoryProvider<UserRepository>.value(value: _userRepository),
       ],
       child: BlocProvider(
         create: (context) => AppBloc(
