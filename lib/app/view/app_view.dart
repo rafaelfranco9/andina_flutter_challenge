@@ -9,6 +9,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:transactions_repository/transactions_repository.dart';
 import 'package:user_repository/user_repository.dart';
+import 'package:uuid_service/uuid_service.dart';
 
 class AppView extends StatelessWidget {
   const AppView({
@@ -18,16 +19,19 @@ class AppView extends StatelessWidget {
     required BeneficiariesRepository beneficiariesRepository,
     required UserRepository userRepository,
     required TransactionsRepository transactionsRepository,
+    required UuidService uuidService,
   })  : _authRepository = authRepository,
         _userRepository = userRepository,
         _transactionsRepository = transactionsRepository,
-        _beneficiariesRepository = beneficiariesRepository;
+        _beneficiariesRepository = beneficiariesRepository,
+        _uuidService = uuidService;
 
   final Flavor flavor;
   final AuthRepository _authRepository;
   final BeneficiariesRepository _beneficiariesRepository;
   final UserRepository _userRepository;
   final TransactionsRepository _transactionsRepository;
+  final UuidService _uuidService;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +41,7 @@ class AppView extends StatelessWidget {
         RepositoryProvider<BeneficiariesRepository>.value(value: _beneficiariesRepository),
         RepositoryProvider<UserRepository>.value(value: _userRepository),
         RepositoryProvider<TransactionsRepository>.value(value: _transactionsRepository),
+        RepositoryProvider<UuidService>.value(value: _uuidService),
       ],
       child: BlocProvider(
         create: (context) => AppBloc(
@@ -51,7 +56,7 @@ class AppView extends StatelessWidget {
             useMaterial3: true,
           ),
           home: BlocBuilder<AppBloc, AppState>(
-            buildWhen: (prev, current) => prev.status != current.status,
+            buildWhen: (prev, current) => prev.isAuthenticated != current.isAuthenticated,
             builder: (context, state) {
               return state.isAuthenticated ? const TopUpPage() : const WelcomePage();
             },

@@ -21,7 +21,7 @@ class TopUpPage extends StatelessWidget {
         userRepository: context.read<UserRepository>(),
         beneficiariesRepository: context.read<BeneficiariesRepository>(),
         transactionsRepository: context.read<TransactionsRepository>(),
-        uuidService: ConcreteUuidService(),
+        uuidService: context.read<UuidService>(),
       )
         ..add(const LoadUserBalance())
         ..add(const LoadBeneficiaries())
