@@ -22,6 +22,8 @@ dependencies:
     path: packages/user_repository
   transactions_repository:
     path: packages/transactions_repository
+  uuid: ^4.4.0
+  flutter_secure_storage: ^4.2.1
 
 dev_dependencies:
   flutter_test:

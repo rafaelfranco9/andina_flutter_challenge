@@ -1,10 +1,12 @@
 import 'package:andina_flutter_challenge/app/app.dart';
 import 'package:andina_flutter_challenge/main/main.dart';
 import 'package:andina_flutter_challenge/top_up/view/top_up_page.dart';
+import 'package:andina_flutter_challenge/welcome/view/welcome_page.dart';
 import 'package:auth_repository/auth_repository.dart';
 import 'package:beneficiaries_repository/beneficiaries_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:transactions_repository/transactions_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -40,6 +42,7 @@ class AppView extends StatelessWidget {
         create: (context) => AppBloc(
           flavor: flavor,
           authRepository: _authRepository,
+          flutterSecureStorage: const FlutterSecureStorage(),
         )..init(),
         child: MaterialApp(
           title: 'Edenred Challenge',
@@ -47,7 +50,12 @@ class AppView extends StatelessWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
           ),
-          home: const TopUpPage(),
+          home: BlocBuilder<AppBloc, AppState>(
+            buildWhen: (prev, current) => prev.status != current.status,
+            builder: (context, state) {
+              return state.isAuthenticated ? const TopUpPage() : const WelcomePage();
+            },
+          ),
         ),
       ),
     );

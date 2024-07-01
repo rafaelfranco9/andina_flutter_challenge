@@ -5,5 +5,6 @@ abstract class BeneficiariesRepository {
 
   Future<void> addBeneficiary(String userId, Beneficiary beneficiary);
 
+  Future<void> updateBeneficiary(String userId, Beneficiary beneficiary);
   Future<void> deleteBeneficiary(String userId, String beneficiaryId);
 }

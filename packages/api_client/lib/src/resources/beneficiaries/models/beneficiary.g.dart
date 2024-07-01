@@ -11,6 +11,7 @@ _$BeneficiaryImpl _$$BeneficiaryImplFromJson(Map<String, dynamic> json) =>
       id: json['id'] as String,
       nickname: json['nickname'] as String,
       phoneNumber: json['phoneNumber'] as String,
+      balance: (json['balance'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$BeneficiaryImplToJson(_$BeneficiaryImpl instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$$BeneficiaryImplToJson(_$BeneficiaryImpl instance) =>
       'id': instance.id,
       'nickname': instance.nickname,
       'phoneNumber': instance.phoneNumber,
+      'balance': instance.balance,
     };

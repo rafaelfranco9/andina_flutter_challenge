@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 
 class BeneficiaryCard extends StatelessWidget {
-  const BeneficiaryCard({super.key, this.width = 200, this.onPressed});
+  const BeneficiaryCard({
+    super.key,
+    this.width = 200,
+    this.onPressed,
+    required this.name,
+    required this.phone,
+  });
 
   final double width;
+  final String name;
+  final String phone;
   final VoidCallback? onPressed;
 
   @override
@@ -26,40 +34,50 @@ class BeneficiaryCard extends StatelessWidget {
           ),
           padding: const EdgeInsets.all(12),
           margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 2),
-          child: FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Rafael Franco',
-                  style: TextStyle(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  name,
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.blue,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  '+9152555219205',
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+              ),
+              const SizedBox(height: 8),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  phone,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
                 ),
-                const SizedBox(height: 8),
-                SizedBox(
-                  child: TextButton(
-                    onPressed: onPressed,
-                    style: TextButton.styleFrom(
-                      shape: const StadiumBorder(),
-                      backgroundColor: Colors.blue,
-                    ),
-                    child: const Text(
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: double.infinity,
+                child: TextButton(
+                  onPressed: onPressed,
+                  style: TextButton.styleFrom(
+                    shape: const StadiumBorder(),
+                    backgroundColor: Colors.blue,
+                  ),
+                  child: const FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
                       'Recharge now',
                       style: TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

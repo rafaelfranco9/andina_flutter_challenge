@@ -23,6 +23,7 @@ mixin _$Beneficiary {
   String get id => throw _privateConstructorUsedError;
   String get nickname => throw _privateConstructorUsedError;
   String get phoneNumber => throw _privateConstructorUsedError;
+  double get balance => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,7 @@ abstract class $BeneficiaryCopyWith<$Res> {
           Beneficiary value, $Res Function(Beneficiary) then) =
       _$BeneficiaryCopyWithImpl<$Res, Beneficiary>;
   @useResult
-  $Res call({String id, String nickname, String phoneNumber});
+  $Res call({String id, String nickname, String phoneNumber, double balance});
 }
 
 /// @nodoc
@@ -55,6 +56,7 @@ class _$BeneficiaryCopyWithImpl<$Res, $Val extends Beneficiary>
     Object? id = null,
     Object? nickname = null,
     Object? phoneNumber = null,
+    Object? balance = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -69,6 +71,10 @@ class _$BeneficiaryCopyWithImpl<$Res, $Val extends Beneficiary>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      balance: null == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -81,7 +87,7 @@ abstract class _$$BeneficiaryImplCopyWith<$Res>
       __$$BeneficiaryImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String id, String nickname, String phoneNumber});
+  $Res call({String id, String nickname, String phoneNumber, double balance});
 }
 
 /// @nodoc
@@ -98,6 +104,7 @@ class __$$BeneficiaryImplCopyWithImpl<$Res>
     Object? id = null,
     Object? nickname = null,
     Object? phoneNumber = null,
+    Object? balance = null,
   }) {
     return _then(_$BeneficiaryImpl(
       id: null == id
@@ -112,6 +119,10 @@ class __$$BeneficiaryImplCopyWithImpl<$Res>
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
               as String,
+      balance: null == balance
+          ? _value.balance
+          : balance // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -120,7 +131,10 @@ class __$$BeneficiaryImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$BeneficiaryImpl implements _Beneficiary {
   const _$BeneficiaryImpl(
-      {required this.id, required this.nickname, required this.phoneNumber});
+      {required this.id,
+      required this.nickname,
+      required this.phoneNumber,
+      required this.balance});
 
   factory _$BeneficiaryImpl.fromJson(Map<String, dynamic> json) =>
       _$$BeneficiaryImplFromJson(json);
@@ -131,10 +145,12 @@ class _$BeneficiaryImpl implements _Beneficiary {
   final String nickname;
   @override
   final String phoneNumber;
+  @override
+  final double balance;
 
   @override
   String toString() {
-    return 'Beneficiary(id: $id, nickname: $nickname, phoneNumber: $phoneNumber)';
+    return 'Beneficiary(id: $id, nickname: $nickname, phoneNumber: $phoneNumber, balance: $balance)';
   }
 
   @override
@@ -146,12 +162,14 @@ class _$BeneficiaryImpl implements _Beneficiary {
             (identical(other.nickname, nickname) ||
                 other.nickname == nickname) &&
             (identical(other.phoneNumber, phoneNumber) ||
-                other.phoneNumber == phoneNumber));
+                other.phoneNumber == phoneNumber) &&
+            (identical(other.balance, balance) || other.balance == balance));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, nickname, phoneNumber);
+  int get hashCode =>
+      Object.hash(runtimeType, id, nickname, phoneNumber, balance);
 
   @JsonKey(ignore: true)
   @override
@@ -171,7 +189,8 @@ abstract class _Beneficiary implements Beneficiary {
   const factory _Beneficiary(
       {required final String id,
       required final String nickname,
-      required final String phoneNumber}) = _$BeneficiaryImpl;
+      required final String phoneNumber,
+      required final double balance}) = _$BeneficiaryImpl;
 
   factory _Beneficiary.fromJson(Map<String, dynamic> json) =
       _$BeneficiaryImpl.fromJson;
@@ -182,6 +201,8 @@ abstract class _Beneficiary implements Beneficiary {
   String get nickname;
   @override
   String get phoneNumber;
+  @override
+  double get balance;
   @override
   @JsonKey(ignore: true)
   _$$BeneficiaryImplCopyWith<_$BeneficiaryImpl> get copyWith =>

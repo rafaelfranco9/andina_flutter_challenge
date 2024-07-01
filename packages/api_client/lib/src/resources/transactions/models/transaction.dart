@@ -13,7 +13,9 @@ abstract class Transaction with _$Transaction {
     required String beneficiaryId,
     required String beneficiaryName,
     required double amount,
+    required double cost,
     required String currency,
+    required String date,
   }) = _Transaction;
 
   factory Transaction.fromJson(Map<String, dynamic> json) => _$TransactionFromJson(json);
@@ -25,7 +27,9 @@ abstract class Transaction with _$Transaction {
     beneficiaryId: '',
     beneficiaryName: '',
     amount: 0,
+    cost: 0,
     currency: '',
     type: TransactionType.unknown,
+    date: '',
   );
 }

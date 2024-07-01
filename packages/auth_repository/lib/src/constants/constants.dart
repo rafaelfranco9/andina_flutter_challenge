@@ -6,5 +6,5 @@ const User mockUser = User(
   email: 'francosprivato@gmail.com',
   nickname: 'Rafael',
   isVerified: true,
-  balance: 2800,
+  balance: 1000,
 );

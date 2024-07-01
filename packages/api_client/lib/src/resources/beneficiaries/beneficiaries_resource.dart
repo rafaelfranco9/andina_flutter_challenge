@@ -31,4 +31,10 @@ class BeneficiariesResource {
     final updatedBeneficiaries = beneficiaries.where((b) => b.id != beneficiaryId).toList();
     await _appHttpClient.post('$_path/${userId}', updatedBeneficiaries.map((e) => e.toJson()).toList());
   }
+
+  Future<void> updateBeneficiary({required String userId, required Beneficiary beneficiary}) async {
+    final beneficiaries = await fetchBeneficiariesByUserId(userId);
+    final updatedBeneficiaries = beneficiaries.map((b) => b.id == beneficiary.id ? beneficiary : b).toList();
+    await _appHttpClient.post('$_path/${userId}', updatedBeneficiaries.map((e) => e.toJson()).toList());
+  }
 }
