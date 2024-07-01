@@ -1,0 +1,20 @@
+name: api_client
+description: Api Client
+version: 0.1.0+1
+publish_to: none
+
+environment:
+  sdk: ^3.4.0
+
+dev_dependencies:
+  mocktail: ^1.0.3
+  test: ^1.25.2
+
+dependencies:
+  app_http_client:
+    path: "../app_http_client"
+  build_runner: ^2.4.11
+  freezed: ^2.5.2
+  freezed_annotation: ^2.4.1
+  json_annotation: ^4.9.0
+  json_serializable: ^6.8.0
