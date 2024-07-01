@@ -21,11 +21,11 @@ class TopUpOptionsBottomSheet extends StatelessWidget {
             shrinkWrap: true,
             itemBuilder: (context, index) => ListTile(
               onTap: () {
-                onTopUpOptionSelected(topUpOptions[index]);
+                onTopUpOptionSelected(kTopUpOptions[index]);
                 Navigator.of(context).pop();
               },
               title: Text(
-                'AED ${topUpOptions[index]}',
+                'AED ${kTopUpOptions[index]}',
                 style: const TextStyle(fontSize: 18),
               ),
               tileColor: Colors.grey.shade300,
@@ -34,7 +34,7 @@ class TopUpOptionsBottomSheet extends StatelessWidget {
               ),
             ),
             separatorBuilder: (context, index) => const SizedBox(height: 10),
-            itemCount: topUpOptions.length,
+            itemCount: kTopUpOptions.length,
           ),
           const SizedBox(height: 30),
         ],

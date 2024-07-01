@@ -6,6 +6,7 @@ import 'package:auth_repository/auth_repository.dart';
 import 'package:beneficiaries_repository/beneficiaries_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:transactions_repository/transactions_repository.dart';
 import 'package:user_repository/user_repository.dart';
 
@@ -41,6 +42,7 @@ class AppView extends StatelessWidget {
         create: (context) => AppBloc(
           flavor: flavor,
           authRepository: _authRepository,
+          flutterSecureStorage: const FlutterSecureStorage(),
         )..init(),
         child: MaterialApp(
           title: 'Edenred Challenge',
@@ -49,9 +51,9 @@ class AppView extends StatelessWidget {
             useMaterial3: true,
           ),
           home: BlocBuilder<AppBloc, AppState>(
-            buildWhen: (previous, current) => previous.isAuthenticated != current.isAuthenticated,
+            buildWhen: (prev, current) => prev.status != current.status,
             builder: (context, state) {
-              return state.isAuthenticated ? TopUpPage(user: state.user!) : const WelcomePage();
+              return state.isAuthenticated ? const TopUpPage() : const WelcomePage();
             },
           ),
         ),

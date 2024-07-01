@@ -23,4 +23,4 @@ class AppState extends Equatable {
   List<Object?> get props => [flavor, user, isAuthenticated, status];
 }
 
-enum AppStatus { unknown, authenticated, unauthenticated, loading }
+enum AppStatus { unknown, authenticated, unauthenticated, loading, restarted }

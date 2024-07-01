@@ -7,6 +7,7 @@ enum TopUpStatus {
   beneficiariesLoaded,
   transactionsLoaded,
   topUpSuccess,
+  creditAdded,
   beneficiaryAdded,
   failure;
 
@@ -23,6 +24,7 @@ class TopUpState extends Equatable {
   const TopUpState({
     required this.status,
     this.errorMessage = '',
+    this.userBalance = 0,
     this.beneficiaries = const [],
     this.transactions = const [],
   });
@@ -30,6 +32,7 @@ class TopUpState extends Equatable {
   const TopUpState.initial() : this(status: TopUpStatus.initial);
 
   final TopUpStatus status;
+  final double userBalance;
   final List<Beneficiary> beneficiaries;
   final List<Transaction> transactions;
   final String errorMessage;
@@ -37,11 +40,13 @@ class TopUpState extends Equatable {
   TopUpState copyWith({
     TopUpStatus? status,
     String? errorMessage,
+    double? userBalance,
     List<Beneficiary>? beneficiaries,
     List<Transaction>? transactions,
   }) {
     return TopUpState(
       status: status ?? this.status,
+      userBalance: userBalance ?? this.userBalance,
       errorMessage: errorMessage ?? this.errorMessage,
       beneficiaries: beneficiaries ?? this.beneficiaries,
       transactions: transactions ?? this.transactions,
@@ -49,5 +54,5 @@ class TopUpState extends Equatable {
   }
 
   @override
-  List<Object> get props => [status, errorMessage, beneficiaries, transactions];
+  List<Object> get props => [status, errorMessage, beneficiaries, transactions, userBalance];
 }
