@@ -25,4 +25,9 @@ class BeneficiariesLocalRepository implements BeneficiariesRepository {
   Future<void> deleteBeneficiary(String userId, String beneficiaryId) {
     return _apiClient.beneficiariesResource.deleteBeneficiary(userId: userId, beneficiaryId: beneficiaryId);
   }
+
+  @override
+  Future<void> updateBeneficiary(String userId, Beneficiary beneficiary) async {
+    await _apiClient.beneficiariesResource.updateBeneficiary(userId: userId, beneficiary: beneficiary);
+  }
 }

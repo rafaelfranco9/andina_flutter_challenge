@@ -14,7 +14,9 @@ _$TransactionImpl _$$TransactionImplFromJson(Map<String, dynamic> json) =>
       beneficiaryId: json['beneficiaryId'] as String,
       beneficiaryName: json['beneficiaryName'] as String,
       amount: (json['amount'] as num).toDouble(),
+      cost: (json['cost'] as num).toDouble(),
       currency: json['currency'] as String,
+      date: json['date'] as String,
     );
 
 Map<String, dynamic> _$$TransactionImplToJson(_$TransactionImpl instance) =>
@@ -25,9 +27,12 @@ Map<String, dynamic> _$$TransactionImplToJson(_$TransactionImpl instance) =>
       'beneficiaryId': instance.beneficiaryId,
       'beneficiaryName': instance.beneficiaryName,
       'amount': instance.amount,
+      'cost': instance.cost,
       'currency': instance.currency,
+      'date': instance.date,
     };
 
 const _$TransactionTypeEnumMap = {
   TransactionType.topUp: 'topUp',
+  TransactionType.unknown: 'unknown',
 };

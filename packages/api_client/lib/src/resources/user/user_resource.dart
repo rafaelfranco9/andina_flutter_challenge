@@ -13,19 +13,20 @@ class UserResource {
   static const _path = 'v1/user';
 
   /// Fetch user by id.
-  Future<User> fetchUserById({required String id}) async {
+  Future<User?> fetchUserById({required String id}) async {
     final data = await _appHttpClient.get('$_path/$id');
-    if (data == null) {
-      return User.empty;
-    } else {
+
+    if (data != null) {
       final parsedJson = jsonDecode(data) as Map<String, dynamic>;
       return User.fromJson(parsedJson);
     }
+
+    return null;
   }
 
   /// Create user
   Future<void> createUser({required User user}) async {
-    await _appHttpClient.post('$_path/${user.id}', user.toJson());
+    await _appHttpClient.put('$_path/${user.id}', user.toJson());
   }
 
   /// Update user

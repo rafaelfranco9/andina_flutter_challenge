@@ -9,6 +9,7 @@ abstract class Beneficiary with _$Beneficiary {
     required String id,
     required String nickname,
     required String phoneNumber,
+    required double balance,
   }) = _Beneficiary;
 
   factory Beneficiary.fromJson(Map<String, dynamic> json) => _$BeneficiaryFromJson(json);
@@ -18,5 +19,6 @@ abstract class Beneficiary with _$Beneficiary {
     id: '',
     nickname: '',
     phoneNumber: '',
+    balance: 0.0,
   );
 }

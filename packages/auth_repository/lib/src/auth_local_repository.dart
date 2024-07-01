@@ -9,12 +9,23 @@ class AuthLocalRepository implements AuthRepository {
 
   @override
   Future<User> login(String email, String password) async {
-    await _apiClient.userResource.createUser(user: mockUser);
-    return _apiClient.userResource.fetchUserById(id: mockUser.id);
+    final user = await _apiClient.userResource.fetchUserById(id: mockUser.id);
+
+    if (user == null) {
+      await _apiClient.userResource.createUser(user: mockUser);
+      return mockUser;
+    }
+
+    return user;
   }
 
   @override
   Future<void> signOut() {
     return Future.value();
+  }
+
+  @override
+  Future<User?> reload(String id) {
+    return _apiClient.userResource.fetchUserById(id: id);
   }
 }

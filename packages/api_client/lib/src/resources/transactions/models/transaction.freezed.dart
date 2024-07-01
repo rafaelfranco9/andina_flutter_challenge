@@ -26,7 +26,9 @@ mixin _$Transaction {
   String get beneficiaryId => throw _privateConstructorUsedError;
   String get beneficiaryName => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
+  double get cost => throw _privateConstructorUsedError;
   String get currency => throw _privateConstructorUsedError;
+  String get date => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +49,9 @@ abstract class $TransactionCopyWith<$Res> {
       String beneficiaryId,
       String beneficiaryName,
       double amount,
-      String currency});
+      double cost,
+      String currency,
+      String date});
 }
 
 /// @nodoc
@@ -69,7 +73,9 @@ class _$TransactionCopyWithImpl<$Res, $Val extends Transaction>
     Object? beneficiaryId = null,
     Object? beneficiaryName = null,
     Object? amount = null,
+    Object? cost = null,
     Object? currency = null,
+    Object? date = null,
   }) {
     return _then(_value.copyWith(
       type: null == type
@@ -96,9 +102,17 @@ class _$TransactionCopyWithImpl<$Res, $Val extends Transaction>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double,
+      cost: null == cost
+          ? _value.cost
+          : cost // ignore: cast_nullable_to_non_nullable
+              as double,
       currency: null == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -119,7 +133,9 @@ abstract class _$$TransactionImplCopyWith<$Res>
       String beneficiaryId,
       String beneficiaryName,
       double amount,
-      String currency});
+      double cost,
+      String currency,
+      String date});
 }
 
 /// @nodoc
@@ -139,7 +155,9 @@ class __$$TransactionImplCopyWithImpl<$Res>
     Object? beneficiaryId = null,
     Object? beneficiaryName = null,
     Object? amount = null,
+    Object? cost = null,
     Object? currency = null,
+    Object? date = null,
   }) {
     return _then(_$TransactionImpl(
       type: null == type
@@ -166,9 +184,17 @@ class __$$TransactionImplCopyWithImpl<$Res>
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double,
+      cost: null == cost
+          ? _value.cost
+          : cost // ignore: cast_nullable_to_non_nullable
+              as double,
       currency: null == currency
           ? _value.currency
           : currency // ignore: cast_nullable_to_non_nullable
+              as String,
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -184,7 +210,9 @@ class _$TransactionImpl implements _Transaction {
       required this.beneficiaryId,
       required this.beneficiaryName,
       required this.amount,
-      required this.currency});
+      required this.cost,
+      required this.currency,
+      required this.date});
 
   factory _$TransactionImpl.fromJson(Map<String, dynamic> json) =>
       _$$TransactionImplFromJson(json);
@@ -202,11 +230,15 @@ class _$TransactionImpl implements _Transaction {
   @override
   final double amount;
   @override
+  final double cost;
+  @override
   final String currency;
+  @override
+  final String date;
 
   @override
   String toString() {
-    return 'Transaction(type: $type, id: $id, userId: $userId, beneficiaryId: $beneficiaryId, beneficiaryName: $beneficiaryName, amount: $amount, currency: $currency)';
+    return 'Transaction(type: $type, id: $id, userId: $userId, beneficiaryId: $beneficiaryId, beneficiaryName: $beneficiaryName, amount: $amount, cost: $cost, currency: $currency, date: $date)';
   }
 
   @override
@@ -222,14 +254,16 @@ class _$TransactionImpl implements _Transaction {
             (identical(other.beneficiaryName, beneficiaryName) ||
                 other.beneficiaryName == beneficiaryName) &&
             (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.cost, cost) || other.cost == cost) &&
             (identical(other.currency, currency) ||
-                other.currency == currency));
+                other.currency == currency) &&
+            (identical(other.date, date) || other.date == date));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, type, id, userId, beneficiaryId,
-      beneficiaryName, amount, currency);
+      beneficiaryName, amount, cost, currency, date);
 
   @JsonKey(ignore: true)
   @override
@@ -253,7 +287,9 @@ abstract class _Transaction implements Transaction {
       required final String beneficiaryId,
       required final String beneficiaryName,
       required final double amount,
-      required final String currency}) = _$TransactionImpl;
+      required final double cost,
+      required final String currency,
+      required final String date}) = _$TransactionImpl;
 
   factory _Transaction.fromJson(Map<String, dynamic> json) =
       _$TransactionImpl.fromJson;
@@ -271,7 +307,11 @@ abstract class _Transaction implements Transaction {
   @override
   double get amount;
   @override
+  double get cost;
+  @override
   String get currency;
+  @override
+  String get date;
   @override
   @JsonKey(ignore: true)
   _$$TransactionImplCopyWith<_$TransactionImpl> get copyWith =>

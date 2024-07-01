@@ -17,4 +17,29 @@ class TransactionsLocalRepository implements TransactionsRepository {
   Future<List<Transaction>> fetchUserTransactions(String userId) {
     return _apiClient.transactionsResource.fetchUserTransactions(userId);
   }
+
+  @override
+  Future<Map<String, List<Transaction>>> fetchUserMonthlyTransactionsByBeneficiary({
+    required String userId,
+    required int month,
+    required int year,
+  }) async {
+    final transactions = await _apiClient.transactionsResource.fetchUserTransactions(userId);
+
+    final monthTransactions = transactions.where((transaction) {
+      final date = DateTime.parse(transaction.date);
+      return date.month == month && date.year == year;
+    });
+
+    final transactionsByBeneficiary = <String, List<Transaction>>{};
+    for (final transaction in monthTransactions) {
+      if (transactionsByBeneficiary.containsKey(transaction.beneficiaryId)) {
+        transactionsByBeneficiary[transaction.beneficiaryId]!.add(transaction);
+      } else {
+        transactionsByBeneficiary[transaction.beneficiaryId] = [transaction];
+      }
+    }
+
+    return transactionsByBeneficiary;
+  }
 }
