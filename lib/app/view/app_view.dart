@@ -50,7 +50,7 @@ class AppView extends StatelessWidget {
           flutterSecureStorage: const FlutterSecureStorage(),
         )..init(),
         child: MaterialApp(
-          title: 'Edenred Challenge',
+          title: 'Andina Challenge',
           theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
             useMaterial3: true,
