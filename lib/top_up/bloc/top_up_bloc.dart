@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:andina_flutter_challenge/app/app.dart';
+import 'package:andina_flutter_challenge/extensions/datetime_extension.dart';
 import 'package:andina_flutter_challenge/top_up/bloc/top_up_event.dart';
 import 'package:andina_flutter_challenge/top_up/bloc/top_up_state.dart';
 import 'package:andina_flutter_challenge/top_up/constants/constants.dart';
@@ -9,7 +10,7 @@ import 'package:beneficiaries_repository/beneficiaries_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:transactions_repository/transactions_repository.dart';
 import 'package:user_repository/user_repository.dart';
-import 'package:uuid/uuid.dart';
+import 'package:uuid_service/uuid_service.dart';
 
 class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
   TopUpBloc({
@@ -17,10 +18,12 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
     required UserRepository userRepository,
     required BeneficiariesRepository beneficiariesRepository,
     required TransactionsRepository transactionsRepository,
+    required UuidService uuidService,
   })  : _appBloc = appBloc,
         _userRepository = userRepository,
         _beneficiariesRepository = beneficiariesRepository,
         _transactionsRepository = transactionsRepository,
+        _uuidService = uuidService,
         super(const TopUpState.initial()) {
     on<LoadBeneficiaries>(_onLoadBeneficiaries);
     on<LoadTransactions>(_onLoadTransactions);
@@ -34,6 +37,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
   final UserRepository _userRepository;
   final BeneficiariesRepository _beneficiariesRepository;
   final TransactionsRepository _transactionsRepository;
+  final UuidService _uuidService;
 
   User get _currentUser => _appBloc.state.user!;
   bool get userIsVerified => _currentUser.isVerified;
@@ -44,7 +48,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
       final beneficiaries = await _beneficiariesRepository.getUserBeneficiaries(_currentUser.id);
       emit(state.copyWith(status: TopUpStatus.beneficiariesLoaded, beneficiaries: beneficiaries));
     } catch (e) {
-      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'Error fetching user beneficiaries'));
+      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kErrorFetchingUserBeneficiariesErrorMessage));
     }
   }
 
@@ -55,7 +59,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
       final reverseList = transactions.reversed.toList();
       emit(state.copyWith(status: TopUpStatus.transactionsLoaded, transactions: reverseList));
     } catch (e) {
-      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'Error fetching user transactions'));
+      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kErrorFetchingUserTransactionsErrorMessage));
     }
   }
 
@@ -67,7 +71,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
     emit(state.copyWith(status: TopUpStatus.loading));
     try {
       if (state.beneficiaries.length >= 5) {
-        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'You can only have 5 beneficiaries'));
+        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kCanNotAddBeneficiaryErrorMessage));
         return;
       }
 
@@ -79,7 +83,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'Error adding beneficiary'));
+      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kErrorAddingBeneficiaryErrorMessage));
     }
   }
 
@@ -95,7 +99,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
 
       /// Check if user has enough funds
       if (amountToCharge > userBalance) {
-        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'Insufficient funds'));
+        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kInsufficientFundsErrorMessage));
         return;
       }
 
@@ -112,12 +116,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
 
       /// Check if user has reached the maximum top up amount for the month for all beneficiaries
       if (totalMonthlyTopUps + event.amount > kMaxTopUpMonthlyAmount) {
-        emit(
-          state.copyWith(
-            status: TopUpStatus.failure,
-            errorMessage: 'You have reached the maximum top up amount of AED $kMaxTopUpMonthlyAmount for this month',
-          ),
-        );
+        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kMaxTopUpMonthlyAmountErrorMessage));
         return;
       }
 
@@ -129,25 +128,13 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
 
       /// Check if user has reached the maximum top up amount for the month for that beneficiary if user is not verified
       if (!userIsVerified && totalBeneficiaryTopUpsAmount + event.amount > kMaxUnverifiedMonthlyTopUpAmount) {
-        emit(
-          state.copyWith(
-            status: TopUpStatus.failure,
-            errorMessage:
-                'You have reached the maximum top up amount of AED $kMaxUnverifiedMonthlyTopUpAmount for this month for this beneficiary',
-          ),
-        );
+        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kMaxUnverifiedMonthlyTopUpAmountErrorMessage));
         return;
       }
 
       /// Check if user has reached the maximum top up amount for the month for that beneficiary if user is verified
       if (userIsVerified && totalBeneficiaryTopUpsAmount + event.amount > kMaxVerifiedMonthlyTopUpAmount) {
-        emit(
-          state.copyWith(
-            status: TopUpStatus.failure,
-            errorMessage:
-                'You have reached the maximum top up amount of AED $kMaxVerifiedMonthlyTopUpAmount for this month for that beneficiary',
-          ),
-        );
+        emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kMaxVerifiedMonthlyTopUpAmountErrorMessage));
         return;
       }
 
@@ -155,14 +142,14 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
 
       final transaction = Transaction(
         type: TransactionType.topUp,
-        id: const Uuid().v4(),
+        id: _uuidService.v4(),
         userId: userId,
         beneficiaryId: event.beneficiary.id,
         beneficiaryName: event.beneficiary.nickname,
         amount: event.amount,
         cost: fixedFee,
         currency: 'AED',
-        date: DateTime.now().toIso8601String(),
+        date: ExtendedDateTime.current.toIso8601String(),
       );
 
       await _userRepository.removeCreditFromBalance(userId, amountToCharge);
@@ -182,7 +169,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'Error topping up beneficiary'));
+      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kErrorToppingUpBeneficiaryErrorMessage));
     }
   }
 
@@ -197,7 +184,7 @@ class TopUpBloc extends Bloc<TopUpEvent, TopUpState> {
         ),
       );
     } catch (e) {
-      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: 'Error adding credit'));
+      emit(state.copyWith(status: TopUpStatus.failure, errorMessage: kErrorAddingCreditErrorMessage));
     }
   }
 }
